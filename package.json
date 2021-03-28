@@ -9,12 +9,14 @@
     "dev": "tsc -w & nodemon -q -w dist dist/main.js",
     "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
-    "test": "jest"
+    "test": "jest --watchAll",
+    "test:staged": "jest"
   },
   "lint-staged": {
     "src/**/*.js": [
       "yarn format",
-      "git add ."
+      "git add .",
+      "yarn test:staged"
     ]
   },
   "devDependencies": {
