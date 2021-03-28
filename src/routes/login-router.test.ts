@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { MissingParamError } from '../errors/missing-param.error';
+import { UnauthorizedError } from '../errors/unauthorized.error';
 import { LoginRouter } from './login-router';
 
 export class AuthUseCaseSpy {
@@ -89,5 +90,6 @@ describe('Login Router', () => {
 
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse?.statusCode).toBe(401);
+    expect(httpResponse?.body).toEqual(new UnauthorizedError());
   });
 });
