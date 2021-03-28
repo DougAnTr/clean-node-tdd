@@ -1,15 +1,20 @@
 module.exports = {
   env: {
     es2021: true,
-    node: true,
+    node: true
   },
-  extends: ['standard', 'prettier'],
+  extends: [
+    'standard'
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module',
+    sourceType: 'module'
   },
-  plugins: ['prettier'],
+  plugins: [
+    '@typescript-eslint'
+  ],
   rules: {
-    'prettier/prettier': 'error',
-  },
-};
+  }
+}
+
