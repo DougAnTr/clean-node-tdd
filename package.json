@@ -11,8 +11,8 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "eslint src --ext .js",
-      "prettier --write"
+      "yarn format",
+      "git add ."
     ]
   },
   "devDependencies": {
