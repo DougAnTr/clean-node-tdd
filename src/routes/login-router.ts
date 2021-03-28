@@ -1,7 +1,10 @@
 import { Request } from 'express';
 import { HttpResponse } from '../helpers/http-response';
+import { AuthUseCaseSpy } from './login-router.test';
 
 export class LoginRouter {
+  constructor(private authUseCase: AuthUseCaseSpy) {}
+
   route(httpRequest?: Request) {
     if (!httpRequest || !httpRequest.body) {
       return HttpResponse.serverError();
@@ -16,5 +19,7 @@ export class LoginRouter {
     if (!password) {
       return HttpResponse.badRequest('password');
     }
+
+    this.authUseCase.auth(email, password);
   }
 }

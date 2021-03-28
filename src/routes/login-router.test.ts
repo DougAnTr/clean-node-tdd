@@ -2,12 +2,26 @@ import { Request } from 'express';
 import { MissingParamError } from '../errors/missing-param.error';
 import { LoginRouter } from './login-router';
 
+export class AuthUseCaseSpy {
+  public email: string = '';
+  public password: string = '';
+
+  auth(email: string, password: string) {
+    this.email = email;
+    this.password = password;
+  }
+}
+
 const makeSut = () => {
-  return new LoginRouter();
+  const authUseCase = new AuthUseCaseSpy();
+  return {
+    sut: new LoginRouter(authUseCase),
+    authUseCase,
+  };
 };
 describe('Login Router', () => {
-  it('Should return status code 400 if no email is provided', () => {
-    const sut = makeSut();
+  test('Should return status code 400 if no email is provided', () => {
+    const { sut } = makeSut();
 
     const httpRequest = {
       body: {
@@ -20,7 +34,7 @@ describe('Login Router', () => {
   });
 
   it('Should return status code 400 if no password is provided', () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
 
     const httpRequest = {
       body: {
@@ -33,18 +47,33 @@ describe('Login Router', () => {
   });
 
   it('Should return status code 500 if no httpRequest is provided', () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
 
     const httpResponse = sut.route();
     expect(httpResponse?.statusCode).toBe(500);
   });
 
   it('Should return status code 500 if httpRequest has no body', () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
 
     const httpRequest = {} as Request;
 
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse?.statusCode).toBe(500);
+  });
+
+  it('Shoudl call AuthUseCase with correct params', () => {
+    const { sut, authUseCase } = makeSut();
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com',
+        password: 'any_password',
+      },
+    } as Request;
+
+    sut.route(httpRequest);
+    expect(authUseCase.email).toBe(httpRequest.body.email);
+    expect(authUseCase.password).toBe(httpRequest.body.password);
   });
 });
