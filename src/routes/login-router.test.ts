@@ -12,7 +12,7 @@ describe('Login Router', () => {
       },
     } as Request;
     const httpResponse = sut.route(httpRequest);
-    expect(httpResponse?.statusCode).toBe(400);
+    expect(httpResponse?.statusCode).toBe(300);
     expect(httpResponse?.body).toEqual(new MissingParamError('email'));
   });
 
