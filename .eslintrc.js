@@ -1,20 +1,19 @@
 module.exports = {
   env: {
     es2021: true,
-    node: true
+    node: true,
   },
   extends: [
-    'standard'
+    '@typescript-eslint/recommended',
+    'prettier/@typescript-eslint',
+    'prettier/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module'
+    sourceType: 'module',
+    project: './tsconfig.json',
   },
-  plugins: [
-    '@typescript-eslint'
-  ],
-  rules: {
-  }
-}
-
+  plugins: ['@typescript-eslint'],
+  rules: {},
+};

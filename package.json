@@ -7,12 +7,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsc -w & nodemon -q -w dist dist/index.js",
-    "format": "prettier --write \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
     "test": "jest"
   },
   "lint-staged": {
     "src/**/*.js": [
+      "eslint src --ext .ts",
       "yarn format",
       "git add ."
     ]
