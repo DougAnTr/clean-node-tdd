@@ -13,13 +13,14 @@
     "test:staged": "jest"
   },
   "lint-staged": {
-    "src/**/*.js": [
+    "src/**/*.ts": [
       "yarn format",
       "git add .",
       "yarn test:staged"
     ]
   },
   "devDependencies": {
+    "@types/jest": "^26.0.22",
     "@types/express": "^4.17.11",
     "@types/node": "^14.14.37",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
@@ -36,7 +37,6 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@types/jest": "^26.0.22",
     "express": "^4.17.1",
     "nodemon": "^2.0.7"
   }
