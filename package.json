@@ -16,7 +16,9 @@
     ]
   },
   "husky": {
-    "pre-commit": "lint-staged"
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "devDependencies": {
     "eslint": "^7.23.0",
