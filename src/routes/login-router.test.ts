@@ -47,13 +47,6 @@ describe('Login Router', () => {
     expect(httpResponse?.body).toEqual(new MissingParamError('password'));
   });
 
-  it('Should return status code 500 if no httpRequest is provided', () => {
-    const { sut } = makeSut();
-
-    const httpResponse = sut.route();
-    expect(httpResponse?.statusCode).toBe(500);
-  });
-
   it('Should return status code 500 if httpRequest has no body', () => {
     const { sut } = makeSut();
 

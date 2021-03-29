@@ -5,7 +5,7 @@ import { AuthUseCaseSpy } from './login-router.test';
 export class LoginRouter {
   constructor(private authUseCase: AuthUseCaseSpy) {}
 
-  route(httpRequest?: Request) {
+  route(httpRequest: Request) {
     if (!httpRequest || !httpRequest.body) {
       return HttpResponse.serverError();
     }
