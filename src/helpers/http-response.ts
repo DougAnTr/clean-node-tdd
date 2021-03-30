@@ -26,4 +26,10 @@ export class HttpResponse {
       body: new UnauthorizedError(),
     };
   }
+
+  static ok(): HttpResponseInterface {
+    return {
+      statusCode: 200,
+    };
+  }
 }

@@ -6,10 +6,13 @@ import { LoginRouter } from './login-router';
 export class AuthUseCaseSpy {
   public email: string = '';
   public password: string = '';
+  public accessToken: string | null = 'valid_token';
 
   auth(email: string, password: string) {
     this.email = email;
     this.password = password;
+
+    return this.accessToken;
   }
 }
 
@@ -20,6 +23,7 @@ const makeSut = () => {
     authUseCase,
   };
 };
+
 describe('Login Router', () => {
   test('Should return status code 400 if no email is provided', () => {
     const { sut } = makeSut();
@@ -71,8 +75,10 @@ describe('Login Router', () => {
     expect(authUseCase.password).toBe(httpRequest.body.password);
   });
 
-  it('Shoudl 401 when ivalid credentials are provided', () => {
-    const { sut } = makeSut();
+  it('Should return satus code 401 when invalid credentials are provided', () => {
+    const { sut, authUseCase } = makeSut();
+
+    authUseCase.accessToken = null;
 
     const httpRequest = {
       body: {
@@ -84,5 +90,19 @@ describe('Login Router', () => {
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse?.statusCode).toBe(401);
     expect(httpResponse?.body).toEqual(new UnauthorizedError());
+  });
+
+  it('Should return status code 200 when valid credentials are provided', () => {
+    const { sut, authUseCase } = makeSut();
+
+    const httpRequest = {
+      body: {
+        email: 'valid_any_email@email.com',
+        password: 'valid_password',
+      },
+    } as Request;
+
+    const httpResponse = sut.route(httpRequest);
+    expect(httpResponse?.statusCode).toBe(200);
   });
 });

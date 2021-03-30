@@ -6,7 +6,7 @@ export class LoginRouter {
   constructor(private authUseCase: AuthUseCaseSpy) {}
 
   route(httpRequest: Request) {
-    if (!httpRequest || !httpRequest.body) {
+    if (!httpRequest.body) {
       return HttpResponse.serverError();
     }
 
@@ -20,8 +20,12 @@ export class LoginRouter {
       return HttpResponse.badRequest('password');
     }
 
-    this.authUseCase.auth(email, password);
+    const accessToken = this.authUseCase.auth(email, password);
 
-    return HttpResponse.unauthorized();
+    if (!accessToken) {
+      return HttpResponse.unauthorized();
+    }
+
+    return HttpResponse.ok();
   }
 }
