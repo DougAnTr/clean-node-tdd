@@ -3,7 +3,7 @@ import { UnauthorizedError } from '../errors/unauthorized.error';
 
 interface HttpResponseInterface {
   statusCode: number;
-  body?: Object;
+  body?: any;
 }
 
 export class HttpResponse {
@@ -27,9 +27,10 @@ export class HttpResponse {
     };
   }
 
-  static ok(): HttpResponseInterface {
+  static ok(body: any): HttpResponseInterface {
     return {
       statusCode: 200,
+      body,
     };
   }
 }
