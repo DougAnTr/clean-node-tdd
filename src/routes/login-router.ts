@@ -6,26 +6,26 @@ export class LoginRouter {
   constructor(private authUseCase: AuthUseCaseSpy) {}
 
   route(httpRequest: Request) {
-    if (!httpRequest.body) {
+    try {
+      const { email, password } = httpRequest.body;
+
+      if (!email) {
+        return HttpResponse.badRequest('email');
+      }
+
+      if (!password) {
+        return HttpResponse.badRequest('password');
+      }
+
+      const accessToken = this.authUseCase.auth(email, password);
+
+      if (!accessToken) {
+        return HttpResponse.unauthorized();
+      }
+
+      return HttpResponse.ok({ accessToken });
+    } catch (e) {
       return HttpResponse.serverError();
     }
-
-    const { email, password } = httpRequest.body;
-
-    if (!email) {
-      return HttpResponse.badRequest('email');
-    }
-
-    if (!password) {
-      return HttpResponse.badRequest('password');
-    }
-
-    const accessToken = this.authUseCase.auth(email, password);
-
-    if (!accessToken) {
-      return HttpResponse.unauthorized();
-    }
-
-    return HttpResponse.ok({ accessToken });
   }
 }

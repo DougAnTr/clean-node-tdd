@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { InternalServerError } from '../errors/internal-server.error';
 import { MissingParamError } from '../errors/missing-param.error';
 import { UnauthorizedError } from '../errors/unauthorized.error';
 import { LoginRouter } from './login-router';
@@ -58,6 +59,7 @@ describe('Login Router', () => {
 
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse?.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new InternalServerError());
   });
 
   it('Shoudl call AuthUseCase with correct params', () => {

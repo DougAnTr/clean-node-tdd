@@ -1,3 +1,4 @@
+import { InternalServerError } from '../errors/internal-server.error';
 import { MissingParamError } from '../errors/missing-param.error';
 import { UnauthorizedError } from '../errors/unauthorized.error';
 
@@ -17,6 +18,7 @@ export class HttpResponse {
   static serverError(): HttpResponseInterface {
     return {
       statusCode: 500,
+      body: new InternalServerError(),
     };
   }
 
