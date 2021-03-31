@@ -4,7 +4,7 @@ import { HttpResponse } from '../helpers/http-response';
 export class LoginRouter {
   constructor(private authUseCase: any) {}
 
-  route(httpRequest: Request) {
+  async route(httpRequest: Request) {
     try {
       const { email, password } = httpRequest.body;
 
@@ -16,7 +16,7 @@ export class LoginRouter {
         return HttpResponse.badRequest('password');
       }
 
-      const accessToken = this.authUseCase.auth(email, password);
+      const accessToken = await this.authUseCase.auth(email, password);
 
       if (!accessToken) {
         return HttpResponse.unauthorized();
