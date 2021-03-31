@@ -4,20 +4,20 @@ import { MissingParamError } from '../errors/missing-param.error';
 import { UnauthorizedError } from '../errors/unauthorized.error';
 import { LoginRouter } from './login-router';
 
-export class AuthUseCaseSpy {
-  public email: string = '';
-  public password: string = '';
-  public accessToken: string | null = 'valid_token';
-
-  auth(email: string, password: string) {
-    this.email = email;
-    this.password = password;
-
-    return this.accessToken;
-  }
-}
-
 const makeSut = () => {
+  class AuthUseCaseSpy {
+    public email: string = '';
+    public password: string = '';
+    public accessToken: string | null = 'valid_token';
+
+    auth(email: string, password: string) {
+      this.email = email;
+      this.password = password;
+
+      return this.accessToken;
+    }
+  }
+
   const authUseCase = new AuthUseCaseSpy();
   return {
     sut: new LoginRouter(authUseCase),
@@ -107,5 +107,27 @@ describe('Login Router', () => {
     const httpResponse = sut.route(httpRequest);
     expect(httpResponse?.statusCode).toBe(200);
     expect(httpResponse?.body.accessToken).toEqual(authUseCase.accessToken);
+  });
+
+  it('Should return 500 if AuthUseCase throws an error', () => {
+    class AuthUseCaseSpy {
+      public accessToken = '';
+      auth(email: string, password: string) {
+        throw new Error();
+      }
+    }
+
+    const authUseCaseSpy = new AuthUseCaseSpy();
+    authUseCaseSpy.accessToken = 'valid_token';
+
+    const sut = new LoginRouter(authUseCaseSpy);
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password',
+      },
+    } as Request;
+    const httpResponse = sut.route(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
   });
 });

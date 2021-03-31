@@ -1,9 +1,8 @@
 import { Request } from 'express';
 import { HttpResponse } from '../helpers/http-response';
-import { AuthUseCaseSpy } from './login-router.test';
 
 export class LoginRouter {
-  constructor(private authUseCase: AuthUseCaseSpy) {}
+  constructor(private authUseCase: any) {}
 
   route(httpRequest: Request) {
     try {
