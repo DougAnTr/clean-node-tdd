@@ -8,8 +8,10 @@ import { LoginRouter } from './login-router';
 const makeEmailValidator = () => {
   class EmailValidatorSpy {
     public isEmailValid = true;
+    public email = '';
 
     isValid(email: string) {
+      this.email = email;
       return this.isEmailValid;
     }
   }
@@ -188,5 +190,19 @@ describe('Login Router', () => {
     } as Request;
     const httpResponse = await sut.route(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
+  });
+
+  it('Should call EmailValidator with correct email', async () => {
+    const { sut, emailValidatorSpy } = makeSut();
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com',
+        password: 'any_password',
+      },
+    } as Request;
+
+    await sut.route(httpRequest);
+    expect(emailValidatorSpy.email).toBe(httpRequest.body.email);
   });
 });
