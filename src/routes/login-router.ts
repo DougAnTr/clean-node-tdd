@@ -4,10 +4,7 @@ import { MissingParamError } from '../errors/missing-param.error';
 import { HttpResponse } from '../helpers/http-response';
 
 export class LoginRouter {
-  constructor(
-    private authUseCase: any,
-    private emailValidator: any | null = null,
-  ) {}
+  constructor(private authUseCase: any, private emailValidator: any) {}
 
   async route(httpRequest: Request) {
     try {

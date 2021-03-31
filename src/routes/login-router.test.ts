@@ -136,10 +136,11 @@ describe('Login Router', () => {
       }
     }
 
+    const emailValidatorSpy = makeEmailValidator();
     const authUseCaseSpy = new AuthUseCaseSpy();
     authUseCaseSpy.accessToken = 'valid_token';
 
-    const sut = new LoginRouter(authUseCaseSpy);
+    const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy);
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
