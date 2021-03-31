@@ -8,10 +8,10 @@ interface HttpResponseInterface {
 }
 
 export class HttpResponse {
-  static badRequest(paramName: string): HttpResponseInterface {
+  static badRequest(error: any): HttpResponseInterface {
     return {
       statusCode: 400,
-      body: new MissingParamError(paramName),
+      body: error,
     };
   }
 

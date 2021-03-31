@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
     "test": "jest --watchAll",
-    "test:staged": "jest"
+    "test:staged": "jest --passWithNoTests"
   },
   "lint-staged": {
     "src/**/*.ts": [
