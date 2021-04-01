@@ -9,8 +9,8 @@
     "dev": "rm -rf dist && tsc -w & nodemon -q -w dist dist/main.js",
     "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
-    "test": "jest --watchAll",
-    "test:staged": "jest --passWithNoTests"
+    "test": "jest --watch --silent",
+    "test:staged": "jest --passWithNoTests --findRelatedTests --silent --noStackTrace"
   },
   "lint-staged": {
     "src/**/*.ts": [
