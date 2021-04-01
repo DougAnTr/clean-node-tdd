@@ -11,7 +11,7 @@
     "precommit": "lint-staged",
     "test": "jest --watch --silent",
     "test:staged": "jest --passWithNoTests --findRelatedTests --silent --noStackTrace",
-    "test:ci": "jest --coverage"
+    "test:ci": "jest --coverage --noStackTrace --silent"
   },
   "lint-staged": {
     "src/**/*.ts": [
