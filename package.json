@@ -10,7 +10,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
     "test": "jest --watch --silent",
-    "test:staged": "jest --passWithNoTests --findRelatedTests --silent --noStackTrace"
+    "test:staged": "jest --passWithNoTests --findRelatedTests --silent --noStackTrace",
+    "test:ci": "jest --coverage"
   },
   "lint-staged": {
     "src/**/*.ts": [
