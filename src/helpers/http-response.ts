@@ -1,6 +1,4 @@
-import { InternalServerError } from '../errors/internal-server.error';
-import { MissingParamError } from '../errors/missing-param.error';
-import { UnauthorizedError } from '../errors/unauthorized.error';
+import { InternalServerError, UnauthorizedError } from '../errors';
 
 interface HttpResponseInterface {
   statusCode: number;

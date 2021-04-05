@@ -1,8 +1,10 @@
 import { Request } from 'express';
-import { InternalServerError } from '../errors/internal-server.error';
-import { InvalidParamError } from '../errors/invalid-param.error';
-import { MissingParamError } from '../errors/missing-param.error';
-import { UnauthorizedError } from '../errors/unauthorized.error';
+import {
+  InternalServerError,
+  UnauthorizedError,
+  MissingParamError,
+  InvalidParamError,
+} from '../errors';
 import { LoginRouter } from './login-router';
 
 const makeEmailValidator = () => {
