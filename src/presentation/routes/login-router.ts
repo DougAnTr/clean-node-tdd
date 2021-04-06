@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { InvalidParamError, MissingParamError } from '../errors';
+import { InvalidParamError, MissingParamError } from '../../utils/errors';
 import { HttpResponse } from '../helpers/http-response';
 
 export class LoginRouter {
