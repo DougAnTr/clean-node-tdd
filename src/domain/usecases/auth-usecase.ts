@@ -1,9 +1,13 @@
 import { MissingParamError } from '../../utils/errors';
-import { LoadUserByEmailRepositorySpy } from './auth-usecase.spec';
+import {
+  EncrypterSpy,
+  LoadUserByEmailRepositorySpy,
+} from './auth-usecase.spec';
 
 export class AuthUseCase {
   constructor(
     private loadUserByEmailRepository: LoadUserByEmailRepositorySpy,
+    private encrypter: EncrypterSpy,
   ) {}
 
   async auth(email: string, password: string) {
@@ -20,6 +24,8 @@ export class AuthUseCase {
     if (!user) {
       return null;
     }
+
+    await this.encrypter.compare(password, user.password);
 
     return null;
   }

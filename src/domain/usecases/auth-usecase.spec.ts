@@ -1,9 +1,14 @@
 import { MissingParamError } from '../../utils/errors';
 import { AuthUseCase } from './auth-usecase';
 
+interface UserInterface {
+  password: string;
+}
 export class LoadUserByEmailRepositorySpy {
   public email = '';
-  public user: Object | null = {};
+  public user: UserInterface | null = {
+    password: 'hashed_password',
+  };
 
   async load(email: string) {
     this.email = email;
@@ -12,11 +17,21 @@ export class LoadUserByEmailRepositorySpy {
   }
 }
 
-const makeSut = () => {
-  const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy);
+export class EncrypterSpy {
+  public password = '';
+  public hashedPassword = '';
+  async compare(password: string, hashedPassword: string) {
+    this.password = password;
+    this.hashedPassword = hashedPassword;
+  }
+}
 
-  return { sut, loadUserByEmailRepositorySpy };
+const makeSut = () => {
+  const encrypterSpy = new EncrypterSpy();
+  const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy);
+
+  return { sut, loadUserByEmailRepositorySpy, encrypterSpy };
 };
 
 describe('Auth UseCase', () => {
@@ -57,10 +72,22 @@ describe('Auth UseCase', () => {
   it('Should return null if an invalid password is provided', async () => {
     const { sut, loadUserByEmailRepositorySpy } = makeSut();
     const accessToken = await sut.auth(
-      'any_email@mail.com',
+      'valid_email@mail.com',
       'invalid_password',
     );
 
     expect(accessToken).toBeNull();
+  });
+
+  it('Should call Encrypter with correct values', async () => {
+    const { sut, loadUserByEmailRepositorySpy, encrypterSpy } = makeSut();
+    await sut.auth('valid_email@mail.com', 'any_password');
+
+    expect(encrypterSpy.password).toBe('any_password');
+    if (loadUserByEmailRepositorySpy.user) {
+      expect(encrypterSpy.hashedPassword).toBe(
+        loadUserByEmailRepositorySpy.user.password,
+      );
+    }
   });
 });
