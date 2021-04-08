@@ -1,28 +1,11 @@
 import { MissingParamError } from '../../utils/errors';
+import { AuthUseCase } from './auth-usecase';
 
-class LoadUserByEmailRepositorySpy {
+export class LoadUserByEmailRepositorySpy {
   public email = '';
 
   async load(email: string) {
     this.email = email;
-  }
-}
-
-class AuthUseCase {
-  constructor(
-    private loadUserByEmailRepository: LoadUserByEmailRepositorySpy,
-  ) {}
-
-  async auth(email: string, password: string) {
-    if (!email) {
-      throw new MissingParamError('email');
-    }
-
-    if (!password) {
-      throw new MissingParamError('password');
-    }
-
-    await this.loadUserByEmailRepository.load(email);
   }
 }
 
