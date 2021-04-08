@@ -2,11 +2,13 @@ import { MissingParamError } from '../../utils/errors';
 import { AuthUseCase } from './auth-usecase';
 
 interface UserInterface {
+  id: string;
   password: string;
 }
 export class LoadUserByEmailRepositorySpy {
   public email = '';
   public user: UserInterface | null = {
+    id: 'any_id',
     password: 'hashed_password',
   };
 
@@ -17,21 +19,40 @@ export class LoadUserByEmailRepositorySpy {
   }
 }
 
+export class TokenGeneratorSpy {
+  public userId = '';
+  public accessToken = 'any_token';
+  async generate(userId: string) {
+    this.userId = userId;
+
+    return this.accessToken;
+  }
+}
+
 export class EncrypterSpy {
   public password = '';
   public hashedPassword = '';
+  public isValid = true;
+
   async compare(password: string, hashedPassword: string) {
     this.password = password;
     this.hashedPassword = hashedPassword;
+
+    return this.isValid;
   }
 }
 
 const makeSut = () => {
+  const tokenGeneratorSpy = new TokenGeneratorSpy();
   const encrypterSpy = new EncrypterSpy();
   const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy);
+  const sut = new AuthUseCase(
+    loadUserByEmailRepositorySpy,
+    encrypterSpy,
+    tokenGeneratorSpy,
+  );
 
-  return { sut, loadUserByEmailRepositorySpy, encrypterSpy };
+  return { sut, loadUserByEmailRepositorySpy, encrypterSpy, tokenGeneratorSpy };
 };
 
 describe('Auth UseCase', () => {
@@ -70,7 +91,9 @@ describe('Auth UseCase', () => {
   });
 
   it('Should return null if an invalid password is provided', async () => {
-    const { sut, loadUserByEmailRepositorySpy } = makeSut();
+    const { sut, encrypterSpy } = makeSut();
+    encrypterSpy.isValid = false;
+
     const accessToken = await sut.auth(
       'valid_email@mail.com',
       'invalid_password',
@@ -87,6 +110,17 @@ describe('Auth UseCase', () => {
     if (loadUserByEmailRepositorySpy.user) {
       expect(encrypterSpy.hashedPassword).toBe(
         loadUserByEmailRepositorySpy.user.password,
+      );
+    }
+  });
+
+  it('Should call TokenGenerator with correct values', async () => {
+    const { sut, loadUserByEmailRepositorySpy, tokenGeneratorSpy } = makeSut();
+    await sut.auth('valid_email@mail.com', 'valid_password');
+
+    if (loadUserByEmailRepositorySpy.user) {
+      expect(tokenGeneratorSpy.userId).toBe(
+        loadUserByEmailRepositorySpy.user.id,
       );
     }
   });
