@@ -2,7 +2,7 @@ import { MissingParamError } from '../../utils/errors';
 import { AuthUseCase } from './auth-usecase';
 import { UserType } from '../../interfaces/user.interface';
 
-export class LoadUserByEmailRepositorySpy {
+export class LoadUserByEmailRepository {
   public email = '';
   public user: UserType = {
     id: 'any_id',
@@ -16,7 +16,7 @@ export class LoadUserByEmailRepositorySpy {
   }
 }
 
-export class TokenGeneratorSpy {
+export class TokenGenerator {
   public userId = '';
   public accessToken = 'any_token';
   async generate(userId: string): Promise<string> {
@@ -26,7 +26,7 @@ export class TokenGeneratorSpy {
   }
 }
 
-export class EncrypterSpy {
+export class Encrypter {
   public password = '';
   public hashedPassword = '';
   public isValid = true;
@@ -39,17 +39,35 @@ export class EncrypterSpy {
   }
 }
 
+export class UpdateAccessTokenRepository {
+  public userId = '';
+  public accessToken = '';
+
+  async update(userId: string, accessToken: string): Promise<void> {
+    this.userId = userId;
+    this.accessToken = accessToken;
+  }
+}
+
 const makeSut = () => {
-  const tokenGeneratorSpy = new TokenGeneratorSpy();
-  const encrypterSpy = new EncrypterSpy();
-  const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy();
+  const tokenGeneratorSpy = new TokenGenerator();
+  const encrypterSpy = new Encrypter();
+  const loadUserByEmailRepositorySpy = new LoadUserByEmailRepository();
+  const updateAccessTokenRepositorySpy = new UpdateAccessTokenRepository();
   const sut = new AuthUseCase(
     loadUserByEmailRepositorySpy,
     encrypterSpy,
     tokenGeneratorSpy,
+    updateAccessTokenRepositorySpy,
   );
 
-  return { sut, loadUserByEmailRepositorySpy, encrypterSpy, tokenGeneratorSpy };
+  return {
+    sut,
+    loadUserByEmailRepositorySpy,
+    encrypterSpy,
+    tokenGeneratorSpy,
+    updateAccessTokenRepositorySpy,
+  };
 };
 
 describe('Auth UseCase', () => {
@@ -131,5 +149,24 @@ describe('Auth UseCase', () => {
 
     expect(accessToken).toBe(tokenGeneratorSpy.accessToken);
     expect(accessToken).toBeTruthy();
+  });
+
+  it('Should call UpdateAccessTokenRepository with correct values', async () => {
+    const {
+      sut,
+      loadUserByEmailRepositorySpy,
+      tokenGeneratorSpy,
+      updateAccessTokenRepositorySpy,
+    } = makeSut();
+    await sut.auth('valid_email@mail.com', 'valid_password');
+
+    if (loadUserByEmailRepositorySpy.user) {
+      expect(updateAccessTokenRepositorySpy.userId).toBe(
+        loadUserByEmailRepositorySpy.user.id,
+      );
+      expect(updateAccessTokenRepositorySpy.accessToken).toBe(
+        tokenGeneratorSpy.accessToken,
+      );
+    }
   });
 });

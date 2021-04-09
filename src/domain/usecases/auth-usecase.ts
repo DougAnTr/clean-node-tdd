@@ -1,15 +1,17 @@
 import { MissingParamError } from '../../utils/errors';
 import {
-  EncrypterSpy,
-  LoadUserByEmailRepositorySpy,
-  TokenGeneratorSpy,
+  Encrypter,
+  LoadUserByEmailRepository,
+  TokenGenerator,
+  UpdateAccessTokenRepository,
 } from './auth-usecase.spec';
 
 export class AuthUseCase {
   constructor(
-    private loadUserByEmailRepository: LoadUserByEmailRepositorySpy,
-    private encrypter: EncrypterSpy,
-    private tokenGenerator: TokenGeneratorSpy,
+    private loadUserByEmailRepository: LoadUserByEmailRepository,
+    private encrypter: Encrypter,
+    private tokenGenerator: TokenGenerator,
+    private updateAccessTokenRepository: UpdateAccessTokenRepository,
   ) {}
 
   async auth(email: string, password: string): Promise<string | null> {
@@ -24,7 +26,10 @@ export class AuthUseCase {
     const user = await this.loadUserByEmailRepository.load(email);
 
     if (user && (await this.encrypter.compare(password, user.password))) {
-      return await this.tokenGenerator.generate(user.id);
+      const accessToken = await this.tokenGenerator.generate(user.id);
+      await this.updateAccessTokenRepository.update(user.id, accessToken);
+
+      return accessToken;
     }
 
     return null;
