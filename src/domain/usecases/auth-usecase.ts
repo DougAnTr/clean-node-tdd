@@ -12,7 +12,7 @@ export class AuthUseCase {
     private tokenGenerator: TokenGeneratorSpy,
   ) {}
 
-  async auth(email: string, password: string) {
+  async auth(email: string, password: string): Promise<string | null> {
     if (!email) {
       throw new MissingParamError('email');
     }

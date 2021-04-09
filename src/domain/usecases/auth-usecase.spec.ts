@@ -1,18 +1,15 @@
 import { MissingParamError } from '../../utils/errors';
 import { AuthUseCase } from './auth-usecase';
+import { UserType } from '../../interfaces/user.interface';
 
-interface UserInterface {
-  id: string;
-  password: string;
-}
 export class LoadUserByEmailRepositorySpy {
   public email = '';
-  public user: UserInterface | null = {
+  public user: UserType = {
     id: 'any_id',
     password: 'hashed_password',
   };
 
-  async load(email: string) {
+  async load(email: string): Promise<UserType> {
     this.email = email;
 
     return this.user;
@@ -22,7 +19,7 @@ export class LoadUserByEmailRepositorySpy {
 export class TokenGeneratorSpy {
   public userId = '';
   public accessToken = 'any_token';
-  async generate(userId: string) {
+  async generate(userId: string): Promise<string> {
     this.userId = userId;
 
     return this.accessToken;
@@ -34,7 +31,7 @@ export class EncrypterSpy {
   public hashedPassword = '';
   public isValid = true;
 
-  async compare(password: string, hashedPassword: string) {
+  async compare(password: string, hashedPassword: string): Promise<boolean> {
     this.password = password;
     this.hashedPassword = hashedPassword;
 
