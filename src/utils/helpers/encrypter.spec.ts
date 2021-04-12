@@ -1,10 +1,5 @@
 import bcrypt from 'bcrypt';
-
-class Encrypter {
-  async compare(value: string, hash: string) {
-    return bcrypt.compare(value, hash);
-  }
-}
+import { Encrypter } from './encrypter';
 
 const makeSut = () => {
   return new Encrypter();
