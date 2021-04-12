@@ -23,4 +23,14 @@ describe('Encrypter', () => {
 
     expect(isValid).toBe(false);
   });
+
+  it('Should call bcrypt with correct values', async () => {
+    const sut = new Encrypter();
+    await sut.compare('any_value', 'hashed_value');
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    expect(bcrypt.value).toBe('any_value');
+    expect(bcrypt.hash).toBe('hashed_value');
+  });
 });
