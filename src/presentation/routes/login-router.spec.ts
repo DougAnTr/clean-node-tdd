@@ -19,8 +19,8 @@ const makeEmailValidator = () => {
 
 const makeAuthUseCase = () => {
   class AuthUseCaseSpy {
-    public email: string = '';
-    public password: string = '';
+    public email = '';
+    public password = '';
     public accessToken: string | null = 'valid_token';
 
     async auth(email: string, password: string) {

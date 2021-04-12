@@ -71,20 +71,6 @@ const makeSut = () => {
 };
 
 describe('Auth UseCase', () => {
-  it('Should throw if no email is provided', () => {
-    const { sut } = makeSut();
-    const promise = sut.auth('', 'any_password');
-
-    expect(promise).rejects.toThrow(new MissingParamError('email'));
-  });
-
-  it('Should throw if no password is provided', () => {
-    const { sut } = makeSut();
-    const promise = sut.auth('any_email@mail.com', '');
-
-    expect(promise).rejects.toThrow(new MissingParamError('password'));
-  });
-
   it('Should call LoadUserByEmailRepository with correct email', async () => {
     const { sut, loadUserByEmailRepositorySpy } = makeSut();
 
