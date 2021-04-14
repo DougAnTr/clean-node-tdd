@@ -1,12 +1,5 @@
 import jwt from 'jsonwebtoken';
-
-class TokenGenerator {
-  constructor(public secret: string) {}
-
-  async generate(id: string) {
-    return jwt.sign(id, this.secret);
-  }
-}
+import { TokenGenerator } from './token-generator';
 
 const makeSut = () => {
   return new TokenGenerator('secret');
