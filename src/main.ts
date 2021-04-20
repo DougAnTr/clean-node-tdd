@@ -1,9 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 
 class App {
   private server;
-  private port;
 
+  private readonly port;
   constructor() {
     this.server = express();
     this.port = 3000;
