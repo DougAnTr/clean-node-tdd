@@ -1,17 +1,10 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Collection, MongoClient, Db } from 'mongodb';
+import { MongoClient, Db } from 'mongodb';
+import { LoadUserByEmailRepository } from './load-user-by-email-repository';
 
 let client: MongoClient;
 let db: Db;
-
-class LoadUserByEmailRepository {
-  constructor(private userModel: Collection<any>) {}
-
-  async load(email: string) {
-    return this.userModel.findOne({ email }, { projection: { password: 1 } });
-  }
-}
 
 const makeSut = async () => {
   const userModel = db.collection('users');
