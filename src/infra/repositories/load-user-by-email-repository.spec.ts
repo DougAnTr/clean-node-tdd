@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { MongoClient, Db } from 'mongodb';
+import { Db } from 'mongodb';
+import MongoHelper from '../helpers/mongo-helper';
 import { LoadUserByEmailRepository } from './load-user-by-email-repository';
 
-let client: MongoClient;
 let db: Db;
 
 const makeSut = async () => {
@@ -15,12 +15,8 @@ const makeSut = async () => {
 
 describe('LoadUserByEmail Repository', () => {
   beforeAll(async () => {
-    client = await MongoClient.connect(process.env.MONGO_URL || '', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    db = client.db();
+    await MongoHelper.connect(process.env.MONGO_URL || '');
+    db = await MongoHelper.getDb();
   });
 
   beforeEach(async () => {
@@ -28,7 +24,7 @@ describe('LoadUserByEmail Repository', () => {
   });
 
   afterAll(async () => {
-    await client.close();
+    await MongoHelper.disconnect();
   });
 
   it('Should return null if no user is found', async () => {
