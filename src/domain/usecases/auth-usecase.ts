@@ -1,4 +1,3 @@
-import { MissingParamError } from '../../utils/errors';
 import {
   Encrypter,
   LoadUserByEmailRepository,
