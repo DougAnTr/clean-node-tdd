@@ -1,26 +1,6 @@
-import { Collection, Db } from 'mongodb';
+import { Db } from 'mongodb';
 import MongoHelper from '../helpers/mongo-helper';
-
-class UpdateAccessTokenRepository {
-  userModel: Collection<any>;
-
-  constructor(userModel: Collection<any>) {
-    this.userModel = userModel;
-  }
-
-  async update(userId: string, accessToken: string) {
-    await this.userModel.updateOne(
-      {
-        _id: userId,
-      },
-      {
-        $set: {
-          accessToken,
-        },
-      },
-    );
-  }
-}
+import { UpdateAccessTokenRepository } from './update-access-token-repository';
 
 describe('UpdateAccessToken Repository', () => {
   let db: Db;
