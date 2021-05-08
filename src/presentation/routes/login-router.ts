@@ -5,7 +5,7 @@ import { HttpResponse } from '../helpers/http-response';
 export class LoginRouter {
   constructor(private authUseCase: any, private emailValidator: any) {}
 
-  async route(httpRequest: Request) {
+  async route(httpRequest: Request): Promise<any> {
     try {
       const { email, password } = httpRequest.body;
 

@@ -1,13 +1,14 @@
 {
   "name": "clean-node-tdd",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/main/index.js",
   "repository": "git@github.com:DougAnTr/clean-node-tdd.git",
   "author": "Douglas Trofino <douglas.trofino@outlook.com>",
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
+    "start:dev": "tsc-watch --onSuccess \"nodemon dist/src/main/index.js\"",
     "test": "jest --noStackTrace --passWithNoTests",
     "test:unit": "yarn test --watch -c jest-unit-config.js",
     "test:integration": "yarn test --watch -c jest-integration-config.js",
@@ -41,6 +42,7 @@
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.4",
     "ts-node": "^9.1.1",
+    "tsc-watch": "^4.2.9",
     "typescript": "^4.2.3"
   },
   "dependencies": {
