@@ -12,6 +12,7 @@ describe('MongoHelper', () => {
   it('Should have a db connection when connect is invoked', async () => {
     await MongoHelper.connect(process.env.MONGO_URL || '');
 
+    expect(MongoHelper.client).toBeDefined();
     expect(MongoHelper.db).toBeTruthy();
   });
 
