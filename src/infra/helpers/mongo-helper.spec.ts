@@ -4,6 +4,11 @@ import { config } from 'dotenv';
 config();
 
 describe('MongoHelper', () => {
+  it('Should have properties', () => {
+    expect(MongoHelper.client).toBeUndefined();
+    expect(MongoHelper.db).toBeUndefined();
+  });
+
   it('Should have a db connection when connect is invoked', async () => {
     await MongoHelper.connect(process.env.MONGO_URL || '');
 

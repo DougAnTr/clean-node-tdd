@@ -9,8 +9,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
     "start:dev": "tsc-watch --onSuccess \"nodemon dist/src/main/index.js\"",
-    "test": "jest --noStackTrace --passWithNoTests",
-    "test:unit": "yarn test --watch -c jest-unit-config.js --runInBand",
+    "test": "jest --noStackTrace --passWithNoTests --runInBand",
+    "test:unit": "yarn test --watch -c jest-unit-config.js",
     "test:integration": "yarn test --watch -c jest-integration-config.js",
     "test:staged": "yarn test --findRelatedTests --silent",
     "test:ci": "yarn test --coverage --silent"

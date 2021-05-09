@@ -3,19 +3,14 @@ import { MongoClient, Db } from 'mongodb';
 export default class MongoHelper {
   public static client: MongoClient;
   public static db: Db;
-  private static uri: string;
-  private static dbName = '';
 
-  public static async connect(uri: string, dbName = ''): Promise<void> {
-    this.uri = uri;
-    this.dbName = dbName;
-
+  public static async connect(uri: string): Promise<void> {
     this.client = await MongoClient.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    this.db = this.client.db(dbName);
+    this.db = this.client.db();
   }
 
   public static async disconnect(): Promise<void> {

@@ -5,7 +5,7 @@ module.exports = {
   transform: tsjPreset.transform,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
-  collectCoverageFrom: ['**/src/**/*.ts'],
+  collectCoverageFrom: ['**/src/**/*.ts', '!**/src/main/**'],
   coveragePathIgnorePatterns: ['src/interfaces'],
   watchPathIgnorePatterns: ['globalConfig'],
 };
