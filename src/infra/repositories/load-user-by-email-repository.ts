@@ -1,9 +1,11 @@
-import { Collection } from 'mongodb';
+import MongoHelper from '../helpers/mongo-helper';
 
 export class LoadUserByEmailRepository {
-  constructor(private userModel: Collection<any>) {}
-
   async load(email: string): Promise<any> {
-    return this.userModel.findOne({ email }, { projection: { password: 1 } });
+    const db = await MongoHelper.getDb();
+
+    return db
+      .collection('users')
+      .findOne({ email }, { projection: { password: 1 } });
   }
 }

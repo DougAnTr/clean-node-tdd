@@ -1,9 +1,7 @@
-import {
-  Encrypter,
-  LoadUserByEmailRepository,
-  TokenGenerator,
-  UpdateAccessTokenRepository,
-} from './auth-usecase.spec';
+import { LoadUserByEmailRepository } from '../../infra/repositories/load-user-by-email-repository';
+import { UpdateAccessTokenRepository } from '../../infra/repositories/update-access-token-repository';
+import { Encrypter } from '../../utils/helpers/encrypter';
+import { TokenGenerator } from '../../utils/helpers/token-generator';
 
 export class AuthUseCase {
   constructor(

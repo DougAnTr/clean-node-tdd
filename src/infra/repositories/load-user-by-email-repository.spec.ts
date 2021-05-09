@@ -8,7 +8,7 @@ let db: Db;
 
 const makeSut = async () => {
   const userModel = db.collection('users');
-  const sut = new LoadUserByEmailRepository(userModel);
+  const sut = new LoadUserByEmailRepository();
 
   return { sut, userModel };
 };

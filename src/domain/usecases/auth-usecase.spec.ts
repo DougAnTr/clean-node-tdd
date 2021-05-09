@@ -1,8 +1,9 @@
-import { MissingParamError } from '../../utils/errors';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
 import { AuthUseCase } from './auth-usecase';
 import { UserType } from '../../interfaces/user.interface';
 
-export class LoadUserByEmailRepository {
+class LoadUserByEmailRepository {
   public email = '';
   public user: UserType = {
     id: 'any_id',
@@ -16,7 +17,7 @@ export class LoadUserByEmailRepository {
   }
 }
 
-export class TokenGenerator {
+class TokenGenerator {
   public userId = '';
   public accessToken = 'any_token';
   async generate(userId: string): Promise<string> {
@@ -26,7 +27,7 @@ export class TokenGenerator {
   }
 }
 
-export class Encrypter {
+class Encrypter {
   public password = '';
   public hashedPassword = '';
   public isValid = true;

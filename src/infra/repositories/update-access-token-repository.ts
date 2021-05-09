@@ -1,14 +1,9 @@
-import { Collection } from 'mongodb';
+import MongoHelper from '../helpers/mongo-helper';
 
 export class UpdateAccessTokenRepository {
-  userModel: Collection<any>;
-
-  constructor(userModel: Collection<any>) {
-    this.userModel = userModel;
-  }
-
   async update(userId: string, accessToken: string): Promise<void> {
-    await this.userModel.updateOne(
+    const db = await MongoHelper.getDb();
+    await db.collection('users').updateOne(
       {
         _id: userId,
       },

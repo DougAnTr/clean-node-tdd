@@ -1,33 +1,29 @@
+import { HttpResponse } from '../../interfaces/http-response-interface';
 import { InternalServerError, UnauthorizedError } from '../errors';
 
-interface HttpResponseInterface {
-  statusCode: number;
-  body?: any;
-}
-
-export class HttpResponse {
-  static badRequest(error: any): HttpResponseInterface {
+export class HttpResponseHelper {
+  static badRequest(body: any): HttpResponse {
     return {
       statusCode: 400,
-      body: error,
+      body,
     };
   }
 
-  static serverError(): HttpResponseInterface {
+  static serverError(): HttpResponse {
     return {
       statusCode: 500,
       body: new InternalServerError(),
     };
   }
 
-  static unauthorized(): HttpResponseInterface {
+  static unauthorized(): HttpResponse {
     return {
       statusCode: 401,
       body: new UnauthorizedError(),
     };
   }
 
-  static ok(body: any): HttpResponseInterface {
+  static ok(body: any): HttpResponse {
     return {
       statusCode: 200,
       body,
