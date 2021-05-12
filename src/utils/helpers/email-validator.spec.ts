@@ -1,3 +1,20 @@
+import { jest } from '@jest/globals';
+
+jest.mock('validator', () => ({
+  isEmailValid: true,
+  email: '',
+
+  isEmail(email: string) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    this.email = email;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    return this.isEmailValid;
+  },
+}));
+
 import validator from 'validator';
 import { EmailValidator } from './email-validator';
 
@@ -14,7 +31,8 @@ describe('Email Validator', () => {
   });
 
   it('Should returns false if email is invalid', () => {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     validator.isEmailValid = false;
     const sut = makeSut();
     const isEmailValid = sut.isValid('invalid_email@email.com');
@@ -25,9 +43,10 @@ describe('Email Validator', () => {
   it('Should call validator with correct email', () => {
     const sut = makeSut();
     const email = 'invalid_email@email.com';
-    const isEmailValid = sut.isValid(email);
+    sut.isValid(email);
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     expect(validator.email).toBe(email);
   });
 });

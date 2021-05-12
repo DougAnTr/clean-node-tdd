@@ -7,8 +7,8 @@ const router = Router();
 
 export const setupRoutes = (app: Application): void => {
   app.use('/api', router);
-  FastGlob.sync('**/src/main/routes/*{.js}').forEach((file) =>
-    import(resolve(__dirname, '..', '..', '..', '..', file)).then((route) =>
+  FastGlob.sync('**/src/main/routes/**routes.ts').forEach((file) =>
+    import(resolve(__dirname, '..', '..', '..', file)).then((route) =>
       route.fc(router),
     ),
   );

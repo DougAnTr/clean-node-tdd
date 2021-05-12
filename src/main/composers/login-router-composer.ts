@@ -6,6 +6,8 @@ import { LoginRouter } from '../../presentation/routes/login-router';
 import { EmailValidator } from '../../utils/helpers/email-validator';
 import { Encrypter } from '../../utils/helpers/encrypter';
 import { TokenGenerator } from '../../utils/helpers/token-generator';
+import { config } from 'dotenv';
+config();
 
 export class LoginRouterComposer implements Composer<LoginRouter> {
   compose(): LoginRouter {

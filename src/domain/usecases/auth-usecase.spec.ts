@@ -6,7 +6,7 @@ import { UserType } from '../../interfaces/user.interface';
 class LoadUserByEmailRepository {
   public email = '';
   public user: UserType = {
-    id: 'any_id',
+    _id: 'any_id',
     password: 'hashed_password',
   };
 
@@ -18,10 +18,10 @@ class LoadUserByEmailRepository {
 }
 
 class TokenGenerator {
-  public userId = '';
+  public payload = {};
   public accessToken = 'any_token';
-  async generate(userId: string): Promise<string> {
-    this.userId = userId;
+  async generate(payload: any): Promise<string> {
+    this.payload = payload;
 
     return this.accessToken;
   }
@@ -118,13 +118,12 @@ describe('Auth UseCase', () => {
 
   it('Should call TokenGenerator with correct values', async () => {
     const { sut, loadUserByEmailRepositorySpy, tokenGeneratorSpy } = makeSut();
+
     await sut.auth('valid_email@mail.com', 'valid_password');
 
-    if (loadUserByEmailRepositorySpy.user) {
-      expect(tokenGeneratorSpy.userId).toBe(
-        loadUserByEmailRepositorySpy.user.id,
-      );
-    }
+    expect(tokenGeneratorSpy.payload).toEqual({
+      id: loadUserByEmailRepositorySpy.user._id,
+    });
   });
 
   it('Should return an accessToken if correct credentials are provided', async () => {
@@ -149,7 +148,7 @@ describe('Auth UseCase', () => {
 
     if (loadUserByEmailRepositorySpy.user) {
       expect(updateAccessTokenRepositorySpy.userId).toBe(
-        loadUserByEmailRepositorySpy.user.id,
+        loadUserByEmailRepositorySpy.user._id,
       );
       expect(updateAccessTokenRepositorySpy.accessToken).toBe(
         tokenGeneratorSpy.accessToken,

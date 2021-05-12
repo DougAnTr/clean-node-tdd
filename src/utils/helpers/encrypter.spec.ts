@@ -1,3 +1,23 @@
+import { jest } from '@jest/globals';
+
+jest.mock('bcrypt', () => ({
+  isValid: true,
+  value: '',
+  hash: '',
+
+  async compare(value: string, hash: string) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    this.value = value;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    this.hash = hash;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    return this.isValid;
+  },
+}));
+
 import bcrypt from 'bcrypt';
 import { Encrypter } from './encrypter';
 

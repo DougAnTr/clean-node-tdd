@@ -8,7 +8,7 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "precommit": "lint-staged",
-    "start:dev": "tsc-watch --onSuccess \"nodemon dist/src/main/index.js\"",
+    "start:dev": "nodemon src/main/index.ts",
     "test": "jest --noStackTrace --passWithNoTests --runInBand",
     "test:unit": "yarn test --watch -c jest-unit-config.js",
     "test:integration": "yarn test --watch -c jest-integration-config.js",
