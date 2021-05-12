@@ -35,7 +35,7 @@ describe('Login Routes', () => {
       .expect(200);
   });
 
-  it('Should return 401 when no credentials are provided', async () => {
+  it('Should return 401 when invalid credentials are provided', async () => {
     await request(app)
       .post('/api/login')
       .send({
