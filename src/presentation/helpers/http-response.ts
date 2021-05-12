@@ -2,24 +2,24 @@ import { HttpResponse } from '../../interfaces/http-response-interface';
 import { InternalServerError, UnauthorizedError } from '../errors';
 
 export class HttpResponseHelper {
-  static badRequest(body: any): HttpResponse {
+  static badRequest(error: any): HttpResponse {
     return {
       statusCode: 400,
-      body,
+      body: { error: error.message },
     };
   }
 
   static serverError(): HttpResponse {
     return {
       statusCode: 500,
-      body: new InternalServerError(),
+      body: { error: new InternalServerError().message },
     };
   }
 
   static unauthorized(): HttpResponse {
     return {
       statusCode: 401,
-      body: new UnauthorizedError(),
+      body: { error: new UnauthorizedError().message },
     };
   }
 

@@ -54,8 +54,10 @@ describe('Login Router', () => {
       },
     } as Request;
     const httpResponse = await sut.route(httpRequest);
-    expect(httpResponse?.statusCode).toBe(400);
-    expect(httpResponse?.body).toEqual(new MissingParamError('email'));
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body.error).toBe(
+      new MissingParamError('email').message,
+    );
   });
 
   it('Should return status code 400 if no password is provided', async () => {
@@ -67,8 +69,10 @@ describe('Login Router', () => {
       },
     } as Request;
     const httpResponse = await sut.route(httpRequest);
-    expect(httpResponse?.statusCode).toBe(400);
-    expect(httpResponse?.body).toEqual(new MissingParamError('password'));
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body.error).toBe(
+      new MissingParamError('password').message,
+    );
   });
 
   it('Should return status code 500 if httpRequest has no body', async () => {
@@ -77,8 +81,8 @@ describe('Login Router', () => {
     const httpRequest = {} as Request;
 
     const httpResponse = await sut.route(httpRequest);
-    expect(httpResponse?.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new InternalServerError());
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body.error).toBe(new InternalServerError().message);
   });
 
   it('Shoudl call AuthUseCase with correct params', async () => {
@@ -109,8 +113,8 @@ describe('Login Router', () => {
     } as Request;
 
     const httpResponse = await sut.route(httpRequest);
-    expect(httpResponse?.statusCode).toBe(401);
-    expect(httpResponse?.body).toEqual(new UnauthorizedError());
+    expect(httpResponse.statusCode).toBe(401);
+    expect(httpResponse.body.error).toBe(new UnauthorizedError().message);
   });
 
   it('Should return status code 200 when valid credentials are provided', async () => {
@@ -163,8 +167,10 @@ describe('Login Router', () => {
     } as Request;
 
     const httpResponse = await sut.route(httpRequest);
-    expect(httpResponse?.statusCode).toBe(400);
-    expect(httpResponse?.body).toEqual(new InvalidParamError('email'));
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body.error).toBe(
+      new InvalidParamError('email').message,
+    );
   });
 
   it('Should return 500 if EmailValidator throws an error', async () => {
